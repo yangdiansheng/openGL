@@ -21,14 +21,14 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL
 import javax.microedition.khronos.opengles.GL10
 
-class AirHockeyActivity : AppCompatActivity() {
+class AirHockeyActivity2 : AppCompatActivity() {
 
 
     companion object{
 
         fun start(activity: AppCompatActivity){
             val intent = Intent()
-            intent.setClass(activity, AirHockeyActivity::class.java)
+            intent.setClass(activity, AirHockeyActivity2::class.java)
             activity.startActivity(intent)
         }
     }
@@ -48,7 +48,7 @@ class AirHockeyActivity : AppCompatActivity() {
         //渲染表面
         if (supportEs2){
             glSurfaceView?.setEGLContextClientVersion(2)
-            glSurfaceView?.setRenderer(AirHockeyRender())
+            glSurfaceView?.setRenderer(AirHockeyRender2())
             rendereSet = true
         }else {
             Toast.makeText(this,"this device does not support OpenGL 2.0", Toast.LENGTH_SHORT).show()
@@ -71,7 +71,7 @@ class AirHockeyActivity : AppCompatActivity() {
 }
 
 //渲染器
-class  AirHockeyRender : GLSurfaceView.Renderer{
+class  AirHockeyRender2 : GLSurfaceView.Renderer{
 
     //顶点数据 矩形
     private val tableVertices:Array<Float> = arrayOf(
@@ -83,22 +83,27 @@ class  AirHockeyRender : GLSurfaceView.Renderer{
 
     //顶点数据 两个三角形绘制矩形
     private val tableVerticesWithTriangles:FloatArray = floatArrayOf(
-        //triangle 1
-        -0.5f,-0.5f,
-        0.5f,0.5f,
-        -0.5f,0.5f,
-        //triangle 2
+//        //triangle 1
+//        -0.5f,-0.5f,
+//        0.5f,0.5f,
+//        -0.5f,0.5f,
+//        //triangle 2
+//        -0.5f,-0.5f,
+//        0.5f,-0.5f,
+//        0.5f,0.5f,
+        //triangle fan
+        0f,0f,
         -0.5f,-0.5f,
         0.5f,-0.5f,
         0.5f,0.5f,
+        -0.5f,0.5f,
+        -0.5f,-0.5f,
         //line 1
         -0.5f, 0f,
         0.5f, 0f,
         //mallets
         0f, -0.25f,
-        0f, 0.25f,
-        //中间的球
-        0f,0f
+        0f, 0.25f
     )
 
     companion object{
@@ -168,7 +173,7 @@ class  AirHockeyRender : GLSurfaceView.Renderer{
         GLES20.glEnableVertexAttribArray(aPositionLocation)
     }
 
-
+    
     //在Surface被创建后，每次Surface尺寸变化时调用（横竖屏切换）
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
         //设置视图尺寸
@@ -187,7 +192,8 @@ class  AirHockeyRender : GLSurfaceView.Renderer{
             //更新着色器代码中u_Color的值
             //画两个三角形
             GLES20.glUniform4f(it,1.0f,1.0f,1.0f,1.0f)
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLES,0,6)
+            //绘制三角扇形
+            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN,0,6)
             //画线
             GLES20.glUniform4f(it,1.0f,0.0f,0.0f,1.0f)
             GLES20.glDrawArrays(GLES20.GL_LINES,6,2)
@@ -197,9 +203,6 @@ class  AirHockeyRender : GLSurfaceView.Renderer{
             //画点
             GLES20.glUniform4f(it,0.0f,0.0f,1.0f,1.0f)
             GLES20.glDrawArrays(GLES20.GL_POINTS,9,1)
-            //画中间点
-            GLES20.glUniform4f(it,0.0f,1.0f,0.0f,1.0f)
-            GLES20.glDrawArrays(GLES20.GL_POINTS,10,1)
         }
 
     }
