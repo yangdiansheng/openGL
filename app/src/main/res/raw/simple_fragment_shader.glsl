@@ -11,6 +11,7 @@
 生成片段颜色
 让每个顶点都使用同一个值 四个分量  红 绿 蓝 阿尔法
 **/
+precision mediump float;
 uniform vec4 u_Color;
 
 /**

@@ -1,7 +1,8 @@
-package com.yds.opengl
+package com.yds.opengl.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.yds.opengl.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

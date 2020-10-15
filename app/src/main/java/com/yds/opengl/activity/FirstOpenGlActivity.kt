@@ -1,5 +1,5 @@
 
-package com.yds.opengl
+package com.yds.opengl.activity
 
 import android.app.ActivityManager
 import android.content.Context
@@ -9,7 +9,6 @@ import android.opengl.GLSurfaceView
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
@@ -18,7 +17,8 @@ class FirstOpenGlActivity : AppCompatActivity() {
     companion object{
         fun start(activity: AppCompatActivity){
             val intent = Intent()
-            intent.setClass(activity,FirstOpenGlActivity::class.java)
+            intent.setClass(activity,
+                FirstOpenGlActivity::class.java)
             activity.startActivity(intent)
         }
     }
