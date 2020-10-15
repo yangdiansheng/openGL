@@ -20,6 +20,9 @@
         <activity
             android:name=".FirstOpenGlActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".AirHockeyActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

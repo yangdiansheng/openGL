@@ -12,5 +12,8 @@ class MainActivity : AppCompatActivity() {
         bt_one.setOnClickListener {
             FirstOpenGlActivity.start(this)
         }
+        bt_airhockey.setOnClickListener {
+            AirHockeyActivity.start(this)
+        }
     }
 }

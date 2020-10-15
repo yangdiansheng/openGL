@@ -11,6 +11,11 @@
         android:id="@+id/bt_one"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="第一个opengl" />
+        android:text="firstOpenGl" />
+    <Button
+        android:id="@+id/bt_airhockey"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="airhockey" />
 
 </LinearLayout>
