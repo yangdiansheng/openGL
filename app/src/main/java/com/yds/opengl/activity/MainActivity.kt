@@ -19,5 +19,8 @@ class MainActivity : AppCompatActivity() {
         bt_airhockey_2.setOnClickListener {
             AirHockeyActivity2.start(this)
         }
+        bt_airhockey_ortho.setOnClickListener {
+            AirHockeyOrthoActivity.start(this)
+        }
     }
 }
