@@ -83,40 +83,36 @@ class  AirHockeyRender2 : GLSurfaceView.Renderer{
 
     //顶点数据 两个三角形绘制矩形
     private val tableVerticesWithTriangles:FloatArray = floatArrayOf(
-//        //triangle 1
-//        -0.5f,-0.5f,
-//        0.5f,0.5f,
-//        -0.5f,0.5f,
-//        //triangle 2
-//        -0.5f,-0.5f,
-//        0.5f,-0.5f,
-//        0.5f,0.5f,
-        //triangle fan
-        0f,0f,
-        -0.5f,-0.5f,
-        0.5f,-0.5f,
-        0.5f,0.5f,
-        -0.5f,0.5f,
-        -0.5f,-0.5f,
+        //triangle fan X,Y,R,G,B
+        0f,0f,1f,1f,1f,
+        -0.5f,-0.5f,0.7f,0.7f,0.7f,
+        0.5f,-0.5f,0.7f,0.7f,0.7f,
+        0.5f,0.5f,0.7f,0.7f,0.7f,
+        -0.5f,0.5f,0.7f,0.7f,0.7f,
+        -0.5f,-0.5f,0.7f,0.7f,0.7f,
         //line 1
-        -0.5f, 0f,
-        0.5f, 0f,
+        -0.5f, 0f,1f,0f,0f,
+        0.5f, 0f,0f,0f,1f,
         //mallets
-        0f, -0.25f,
-        0f, 0.25f
+        0f, -0.25f,0f,0f,1f,
+        0f, 0.25f,1f,0f,0f
     )
 
     companion object{
         const val BYTES_PRE_FLOAT = 4
         const val TAG = "AirHockeyActivity"
-        const val U_COLOR = "u_Color"
+        const val A_COLOR = "a_Color"
         const val A_POSITION = "a_Position"
         //顶点有多少个分量
-        const val POSITION_COPOMENT_COUNT = 2
+        const val POSITION_COMPONENT_COUNT = 2
+        const val COLOR_COMPONENT_COUNT = 3
+        //跨距告诉OpenGL每个位置之间有多少个字节
+        const val STRIDE = (POSITION_COMPONENT_COUNT + COLOR_COMPONENT_COUNT) * BYTES_PRE_FLOAT
+
     }
 
     //存储程序对象中位置的变量
-    private var uColorLocation:Int? = null
+    private var aColorLocation:Int? = null
     //存储属性位置
     private var aPositionLocation:Int? = null
 
@@ -142,13 +138,13 @@ class  AirHockeyRender2 : GLSurfaceView.Renderer{
         val vertexShaderSource =
             TextResourceReader.readTextFileFromResource(
                 AppContext,
-                R.raw.simple_vertex_shader
+                R.raw.simple_vertex_shader_2
             )
         val vertexShader = ShaderHelper.compileVertexShader(vertexShaderSource)
         val fragmentShaderSource =
             TextResourceReader.readTextFileFromResource(
                 AppContext,
-                R.raw.simple_fragment_shader
+                R.raw.simple_fragment_shader_2
             )
         val fragmentShader = ShaderHelper.compileFragmentShader(fragmentShaderSource)
         //把着色器连接在一起
@@ -161,16 +157,24 @@ class  AirHockeyRender2 : GLSurfaceView.Renderer{
         GLES20.glUseProgram(program)
 
         //存储程序对象中位置的变量uniform
-        uColorLocation = GLES20.glGetUniformLocation(program, U_COLOR)
+        aColorLocation = GLES20.glGetAttribLocation(program, A_COLOR)
         //属性位置 告诉OpenGL到哪里能找到这个属性对应的数据
         val aPositionLocation = GLES20.glGetAttribLocation(program, A_POSITION)
 
         //可以在缓冲区vertexData中找到a_Position对应的数据
         vertexData.position(0)
-        GLES20.glVertexAttribPointer(aPositionLocation,POSITION_COPOMENT_COUNT,GLES20.GL_FLOAT,false,0,vertexData)
-
+        GLES20.glVertexAttribPointer(aPositionLocation,POSITION_COMPONENT_COUNT,GLES20.GL_FLOAT,false,
+            STRIDE,vertexData)
         //使能顶点数组
         GLES20.glEnableVertexAttribArray(aPositionLocation)
+        //将顶点数据和a_Color关联
+        aColorLocation?.let {
+            vertexData.position(POSITION_COMPONENT_COUNT)
+            GLES20.glVertexAttribPointer(it, COLOR_COMPONENT_COUNT,GLES20.GL_FLOAT,false,
+                STRIDE,vertexData)
+            //使能顶点数组
+            GLES20.glEnableVertexAttribArray(it)
+        }
     }
 
     
@@ -188,7 +192,7 @@ class  AirHockeyRender2 : GLSurfaceView.Renderer{
     override fun onDrawFrame(gl: GL10?) {
         //清空屏幕。会擦除屏幕上的所有颜色
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
-        uColorLocation?.let {
+        aColorLocation?.let {
             //更新着色器代码中u_Color的值
             //画两个三角形
             GLES20.glUniform4f(it,1.0f,1.0f,1.0f,1.0f)
@@ -203,6 +207,7 @@ class  AirHockeyRender2 : GLSurfaceView.Renderer{
             //画点
             GLES20.glUniform4f(it,0.0f,0.0f,1.0f,1.0f)
             GLES20.glDrawArrays(GLES20.GL_POINTS,9,1)
+
         }
 
     }
