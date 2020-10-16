@@ -198,15 +198,21 @@ class  AirHockey3DRender : GLSurfaceView.Renderer{
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
         //设置视图尺寸
         GLES20.glViewport(0,0,width,height)
+
 //        Matrix.perspectiveM(projectMatrix,0,45f,width.toFloat() / height.toFloat(), 1f, 10f)
         MatrixHelper.perspectiveM(projectMatrix,45f,width.toFloat() / height.toFloat(), 1f, 10f)
         //移动桌面
         Matrix.setIdentityM(modelMatrix,0)
-        Matrix.translateM(modelMatrix,0,0f,0f,-2f)
+//        Matrix.translateM(modelMatrix,0,0f,0f,-2f)
+        Matrix.translateM(modelMatrix,0,0f,0f,-3f)
+        Matrix.rotateM(modelMatrix, 0,-60f,1f,0f,0f)
         //矩阵相乘
         val temp = FloatArray(16)
         Matrix.multiplyMM(temp,0,projectMatrix,0,modelMatrix,0)
         System.arraycopy(temp,0,projectMatrix,0,temp.size)
+
+
+
     }
 
     //当绘制第一针时，调用一定要绘制一些东西，即使只是清空屏幕，因为在这个方法返回后，渲染区会被较交换在屏幕上，如果什么
