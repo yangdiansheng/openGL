@@ -27,5 +27,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="airhockey_ortho" />
+    <Button
+        android:id="@+id/bt_airhockey_3d"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="airhockey_3d" />
 
 </LinearLayout>
