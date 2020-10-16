@@ -94,17 +94,17 @@ class  AirHockeyOrthoRender : GLSurfaceView.Renderer{
     private val tableVerticesWithTriangles:FloatArray = floatArrayOf(
         //triangle fan X,Y,R,G,B
         0f,0f,1f,1f,1f,
-        -0.5f,-0.5f,0.7f,0.7f,0.7f,
-        0.5f,-0.5f,0.7f,0.7f,0.7f,
-        0.5f,0.5f,0.7f,0.7f,0.7f,
-        -0.5f,0.5f,0.7f,0.7f,0.7f,
-        -0.5f,-0.5f,0.7f,0.7f,0.7f,
+        -0.5f,-0.8f,0.7f,0.7f,0.7f,
+        0.5f,-0.8f,0.7f,0.7f,0.7f,
+        0.5f,0.8f,0.7f,0.7f,0.7f,
+        -0.5f,0.8f,0.7f,0.7f,0.7f,
+        -0.5f,-0.8f,0.7f,0.7f,0.7f,
         //line 1
         -0.5f, 0f,1f,0f,0f,
         0.5f, 0f,0f,0f,1f,
         //mallets
-        0f, -0.25f,0f,0f,1f,
-        0f, 0.25f,1f,0f,0f
+        0f, -0.4f,0f,0f,1f,
+        0f, 0.4f,1f,0f,0f
     )
 
     companion object{
