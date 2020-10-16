@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.yds.opengl.AppContext
 import com.yds.opengl.R
 import com.yds.opengl.util.LogConfig
+import com.yds.opengl.util.MatrixHelper
 import com.yds.opengl.util.ShaderHelper
 import com.yds.opengl.util.TextResourceReader
 import java.nio.ByteBuffer
@@ -121,6 +122,8 @@ class  AirHockey3DRender : GLSurfaceView.Renderer{
     private val projectMatrix = FloatArray(16)
     //存储矩阵uniform
     private var uMarixLocation:Int? = null
+    //模型矩阵
+    private val modelMatrix = FloatArray(16)
 
     //存储程序对象中位置的变量
     private var aColorLocation:Int? = null
@@ -195,10 +198,15 @@ class  AirHockey3DRender : GLSurfaceView.Renderer{
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
         //设置视图尺寸
         GLES20.glViewport(0,0,width,height)
-        //创建正交投影矩阵
-        val aspectRatio = if(width > height) width.toFloat()/height.toFloat() else height.toFloat()/width.toFloat()
-        if(width > height) Matrix.orthoM(projectMatrix, 0 , -aspectRatio, aspectRatio, -1f,1f,-1f,1f)
-        else Matrix.orthoM(projectMatrix, 0 ,-1f,1f, -aspectRatio, aspectRatio, -1f,1f)
+//        Matrix.perspectiveM(projectMatrix,0,45f,width.toFloat() / height.toFloat(), 1f, 10f)
+        MatrixHelper.perspectiveM(projectMatrix,45f,width.toFloat() / height.toFloat(), 1f, 10f)
+        //移动桌面
+        Matrix.setIdentityM(modelMatrix,0)
+        Matrix.translateM(modelMatrix,0,0f,0f,-2f)
+        //矩阵相乘
+        val temp = FloatArray(16)
+        Matrix.multiplyMM(temp,0,projectMatrix,0,modelMatrix,0)
+        System.arraycopy(temp,0,projectMatrix,0,temp.size)
     }
 
     //当绘制第一针时，调用一定要绘制一些东西，即使只是清空屏幕，因为在这个方法返回后，渲染区会被较交换在屏幕上，如果什么
