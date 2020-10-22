@@ -25,5 +25,8 @@ class MainActivity : AppCompatActivity() {
         bt_airhockey_3d.setOnClickListener {
             AirHockey3DActivity.start(this)
         }
+        bt_airhockey_texture.setOnClickListener {
+            AirHockeyTextureActivity.start(this)
+        }
     }
 }
