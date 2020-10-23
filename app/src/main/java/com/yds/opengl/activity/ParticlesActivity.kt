@@ -100,7 +100,9 @@ class  ParticlesRender : GLSurfaceView.Renderer{
         val angleVarianceInDegree = 5f
         val speedVariance = 1f
 
-
+        //设置混合模式为累加混合
+        GLES20.glEnable(GLES20.GL_BLEND)
+        GLES20.glBlendFunc(GLES20.GL_ONE,GLES20.GL_ONE)
 
         particleProgram = ParticleShaderProgram(AppContext)
         particleSystem = ParticleSystem(100000)
