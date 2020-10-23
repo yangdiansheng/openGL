@@ -16,10 +16,14 @@ open class ShaderProgram(val context: Context,vertexShaderResourceId:Int,fragmen
         //uniform constants
         const val U_MATRIX = "u_Matrix"
         const val U_TEXTURE_UNIT = "u_TextureUnit"
+        const val U_TIME = "u_Time"
         //attribute constants
         const val A_POSITION = "a_Position"
         const val A_COLOR = "a_Color"
         const val A_TEXTURE_CORRDINATES = "a_TextureCoordinates"
+        const val A_DIRECTION_VECTOR = "a_DirectionVector"
+        const val A_PARTICLESTAR_TTIME = "a_ParticleStartTime"
+
     }
 
     var program = ShaderHelper.buildProgram(

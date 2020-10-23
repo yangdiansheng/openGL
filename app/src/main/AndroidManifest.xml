@@ -32,6 +32,8 @@
             android:name=".activity.AirHockey3DActivity" />
         <activity
             android:name=".activity.AirHockeyTextureActivity" />
+        <activity
+            android:name=".activity.ParticlesActivity" />
     </application>
 
 </manifest>
