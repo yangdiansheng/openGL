@@ -97,15 +97,23 @@ class  ParticlesRender : GLSurfaceView.Renderer{
         //设置清空屏幕用的颜色
         GLES20.glClearColor(0.0f,0.0f,0.0f,0.0f)
 
+        val angleVarianceInDegree = 5f
+        val speedVariance = 1f
+
+
+
         particleProgram = ParticleShaderProgram(AppContext)
-        particleSystem = ParticleSystem(10000)
+        particleSystem = ParticleSystem(100000)
         globalStartTime = System.nanoTime()
 
         val particleDirection = Vector(0f,0.5f,0f)
 
-        redParticleShooter = ParticleShooter(Point(-1f,0f,0f),particleDirection,Color.rgb(255,50,5))
-        greenParticleShooter = ParticleShooter(Point(0f,0f,0f),particleDirection,Color.rgb(25,255,25))
-        blueParticleShooter = ParticleShooter(Point(1f,0f,0f),particleDirection,Color.rgb(5,50,255))
+        redParticleShooter = ParticleShooter(Point(-0.6f,0f,0f),
+            particleDirection,Color.rgb(255,50,5),angleVarianceInDegree,speedVariance)
+        greenParticleShooter = ParticleShooter(Point(0f,0f,0f),
+            particleDirection,Color.rgb(25,255,25),angleVarianceInDegree,speedVariance)
+        blueParticleShooter = ParticleShooter(Point(0.6f,0f,0f),
+            particleDirection,Color.rgb(5,50,255),angleVarianceInDegree,speedVariance)
     }
 
 

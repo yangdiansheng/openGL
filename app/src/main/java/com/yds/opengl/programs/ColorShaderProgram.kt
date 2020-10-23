@@ -12,7 +12,7 @@ import javax.microedition.khronos.opengles.GL
 import kotlin.properties.Delegates
 
 //木槌数据
-class ColorShaderProgram(context: Context):ShaderProgram(context, R.raw.texture_vertex_shader,R.raw.texture_fragment_shader) {
+class ColorShaderProgram(context: Context):ShaderProgram(context, R.raw.simple_vertex_shader,R.raw.simple_fragment_shader) {
     private val uMatrixLocation = GLES20.glGetUniformLocation(program, U_MATRIX)
 
     val aPositionLocation = GLES20.glGetAttribLocation(program, A_POSITION)
