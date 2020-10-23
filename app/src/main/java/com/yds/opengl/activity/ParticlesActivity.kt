@@ -89,7 +89,7 @@ class  ParticlesRender : GLSurfaceView.Renderer{
     lateinit var greenParticleShooter: ParticleShooter
     lateinit var blueParticleShooter: ParticleShooter
     var globalStartTime = 0L
-
+    var texture = 0
 
     //Surface被创建的时候回调，发生在应用第一次运行的时候，并且在设备被唤醒或者用于从其他Activity切换回来时，这个
     //方法也可能会被调用，本方法可能会被调用多次
@@ -116,6 +116,8 @@ class  ParticlesRender : GLSurfaceView.Renderer{
             particleDirection,Color.rgb(25,255,25),angleVarianceInDegree,speedVariance)
         blueParticleShooter = ParticleShooter(Point(0.6f,0f,0f),
             particleDirection,Color.rgb(5,50,255),angleVarianceInDegree,speedVariance)
+
+        texture = TextureHelper.loadtexture(AppContext, R.drawable.particle_texture)
     }
 
 
@@ -146,7 +148,7 @@ class  ParticlesRender : GLSurfaceView.Renderer{
         blueParticleShooter.addParticles(particleSystem,currentTime,5)
 
         particleProgram.useProgram()
-        particleProgram.setUniforms(viewProjectionMatrix,currentTime)
+        particleProgram.setUniforms(viewProjectionMatrix,currentTime, texture)
         particleSystem.bindData(particleProgram)
         particleSystem.draw()
 

@@ -15,18 +15,12 @@ precision mediump float;
 varying vec3 v_Color;
 varying float v_ElapsedTime;
 
+uniform sampler2D u_TextureUnit;
+
 
 /**
 着色器入口 gl_FragColor OpenGL会使用这个颜色作为当前片段的最终颜色
 **/
 void main(){
-    float xDistance = 0.5 - gl_PointCoord.x;
-    float yDistance = 0.5 - gl_PointCoord.y;
-    float distanceFromCenter = sqrt(xDistance * xDistance + yDistance * yDistance);
-    if(distanceFromCenter > 0.5){
-        discard;
-    }else {
-        gl_FragColor = vec4(v_Color / v_ElapsedTime, 1.0); //颜色除以运行时间，这个着色器会使年轻粒子明亮，年老粒子暗淡
-    }
-
+    gl_FragColor = vec4(v_Color / v_ElapsedTime, 1.0) * texture2D(u_TextureUnit,gl_PointCoord); //颜色除以运行时间，这个着色器会使年轻粒子明亮，年老粒子暗淡
 }

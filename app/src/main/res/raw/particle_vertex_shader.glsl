@@ -31,5 +31,5 @@ void main(){
     float gravityFactor = v_ElapsedTime * v_ElapsedTime / 8.0; //加速重力因子
     currentPosition.y -= gravityFactor;
     gl_Position = u_Matrix * vec4(currentPosition, 1.0);
-    gl_PointSize = 25.0; //把点大小设置成10个像素
+    gl_PointSize = 20.0; //把点大小设置成10个像素
 }
