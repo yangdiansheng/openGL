@@ -8,10 +8,11 @@ import android.graphics.Color
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
-import com.yds.opengl.App
+import androidx.appcompat.app.AppCompatActivity
 import com.yds.opengl.AppContext
 import com.yds.opengl.R
 import com.yds.opengl.objects.ParticleShooter
@@ -19,9 +20,11 @@ import com.yds.opengl.objects.ParticleSystem
 import com.yds.opengl.objects.SkyBox
 import com.yds.opengl.programs.ParticleShaderProgram
 import com.yds.opengl.programs.SkyboxShaderProgram
-import com.yds.opengl.util.*
+import com.yds.opengl.util.MatrixHelper
+import com.yds.opengl.util.Point
+import com.yds.opengl.util.TextureHelper
+import com.yds.opengl.util.Vector
 import javax.microedition.khronos.egl.EGLConfig
-import javax.microedition.khronos.opengles.GL
 import javax.microedition.khronos.opengles.GL10
 
 class ParticlesActivity : AppCompatActivity() {
@@ -48,16 +51,45 @@ class ParticlesActivity : AppCompatActivity() {
         val configurationInfo = activityManager.deviceConfigurationInfo
         val supportEs2 = configurationInfo.reqGlEsVersion >= 0x20000
 
+        val particlesRender = ParticlesRender()
+
         //渲染表面
         if (supportEs2){
             glSurfaceView?.setEGLContextClientVersion(2)
-            glSurfaceView?.setRenderer(ParticlesRender())
+            glSurfaceView?.setRenderer(particlesRender)
             rendereSet = true
         }else {
             Toast.makeText(this,"this device does not support OpenGL 2.0", Toast.LENGTH_SHORT).show()
             return
         }
+        glSurfaceView?.setOnTouchListener(
+            object : View.OnTouchListener{
 
+                var previousX = 0f
+                var previousY = 0f
+
+                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                    if(event != null){
+                        if(event.action == MotionEvent.ACTION_DOWN){
+                            previousX = event.getX()
+                            previousY = event.getY()
+                        }else if(event.action == MotionEvent.ACTION_MOVE){
+                            val deltaX = event.getX() - previousX
+                            val deltaY  = event.getY() - previousY
+                            previousX = event.getX()
+                            previousY = event.getY()
+                            glSurfaceView?.queueEvent{
+                                particlesRender.handleTouchDrag(deltaX,deltaY)
+                            }
+                        }
+                        return true
+                    }else{
+                        return false
+                    }
+                }
+
+            }
+        )
         setContentView(glSurfaceView)
     }
 
@@ -91,6 +123,9 @@ class  ParticlesRender : GLSurfaceView.Renderer{
     lateinit var skyboxShaderProgram: SkyboxShaderProgram
     lateinit var skyBox: SkyBox
     var skyboxTexture = 0
+
+    private var xRotation = 0f
+    private var yRotation = 0f
 
     //Surface被创建的时候回调，发生在应用第一次运行的时候，并且在设备被唤醒或者用于从其他Activity切换回来时，这个
     //方法也可能会被调用，本方法可能会被调用多次
@@ -152,6 +187,8 @@ class  ParticlesRender : GLSurfaceView.Renderer{
 
     private fun drawSkyBox() {
         Matrix.setIdentityM(viewMatrix,0)
+        Matrix.rotateM(viewMatrix,0,-yRotation,1f,0f,0f)
+        Matrix.rotateM(viewMatrix,0,-xRotation,0f,1f,0f)
         Matrix.multiplyMM(viewProjectionMatrix,0,projectionMatrix,0,viewMatrix,0)
         skyboxShaderProgram.useProgram()
         skyboxShaderProgram.setUniforms(viewProjectionMatrix,skyboxTexture)
@@ -167,6 +204,8 @@ class  ParticlesRender : GLSurfaceView.Renderer{
         blueParticleShooter.addParticles(particleSystem,currentTime,1)
 
         Matrix.setIdentityM(viewMatrix,0)
+        Matrix.rotateM(viewMatrix,0,-yRotation,1f,0f,0f)
+        Matrix.rotateM(viewMatrix,0,-xRotation,0f,1f,0f)
         Matrix.translateM(viewMatrix,0,0f,-1.5f,-5f)
         Matrix.multiplyMM(viewProjectionMatrix,0,projectionMatrix,0,viewMatrix,0)
 
@@ -179,6 +218,17 @@ class  ParticlesRender : GLSurfaceView.Renderer{
         particleSystem.draw()
 
         GLES20.glDisable(GLES20.GL_BLEND)
+    }
+
+    fun handleTouchDrag(deltaX: Float, deltaY: Float) {
+        xRotation += deltaX / 16f;
+        yRotation += deltaY / 16f;
+
+        if (yRotation < -90f) {
+            yRotation = -90f
+        } else if (yRotation > 90) {
+            yRotation = 90f
+        }
     }
 
 
