@@ -31,16 +31,21 @@
         android:id="@+id/bt_airhockey_3d"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="airhockey_3d" />
+        android:text="3d" />
     <Button
         android:id="@+id/bt_airhockey_texture"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="airhockey_texture" />
+        android:text="纹理" />
     <Button
         android:id="@+id/bt_airhockey_particles"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="airhockey_particles" />
+        android:text="粒子效果" />
+    <Button
+        android:id="@+id/bt_skybox"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="天空盒子" />
 
 </LinearLayout>

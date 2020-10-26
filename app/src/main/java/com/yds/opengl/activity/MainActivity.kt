@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         bt_airhockey_texture.setOnClickListener {
             AirHockeyTextureActivity.start(this)
         }
-        bt_airhockey_particles.setOnClickListener {
+        bt_skybox.setOnClickListener {
             ParticlesActivity.start(this)
         }
     }
